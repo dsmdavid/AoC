@@ -10,3 +10,6 @@
 [submodule "AdventCode2022"]
 	path = AdventCode2022
 	url = git@github.com:dsmdavid/AdventCode2022.git
+[submodule "AdventCode2023"]
+	path = AdventCode2023
+	url = git@github.com:dsmdavid/AdventCode2023.git
