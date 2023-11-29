@@ -1,0 +1,29 @@
+name: Download Input
+on:
+  schedule:                                      # run workflow based on schedule
+    - cron: '6 5 1-25 12 *'                      # from the 1. December till 25. December every day at 5:06am (avoid load at full hours)
+    
+  workflow_dispatch:                             # allow to manually start the workflow 
+  
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip' # caching pip dependencies
+    - run: pip install -r requirements.txt
+    - id: launchpythonscript
+      run: |
+          export AOC_SESSION=${{ secrets.AOC_SESSION }}
+          export AOC_USER=${{ secrets.AOC_USER_ID }}
+          export AOC_EMAIL=${{ secrets.AOC_EMAIL }}
+          export AOC_USER_AGENT=${{ secrets.AOC_USER_AGENT }}
+          python utils/download_input.py
+    
+    - uses: stefanzweifel/git-auto-commit-action@v4     # Step that pushes these local changes back to your github repo
+      with:
+        commit_message: download daily input
+        
